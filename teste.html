@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Hash Table</title>
+</head>
+<body>
+    
+    <script>
+
+        class HashTable {
+            constructor(size = 10) {
+                this.dataMap = new Array(size);
+            }
+
+            _hash(key) {
+                let hash = 0;
+                for (let i = 0; i < key.length; i++) {
+                    hash = (hash + key.charCodeAt(i) * 23) % this.dataMap.length;
+                }
+
+                return hash;
+            }
+
+            set(key, value) {
+                let index = this._hash(key);
+
+                if(!this.dataMap[index]) {
+                    this.dataMap[index] = [];
+                }
+
+                this.dataMap[index].push([key, value]);
+                return this;
+            }
+
+            get(key) {
+                let index = this._hash(key);
+                
+                if(this.dataMap[index]) {
+                    for (let i = 0; i < this.dataMap[index].length; i++) {
+                        if (this.dataMap[index][i][0] === key) {
+                            return this.dataMap[index][i][1];
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            has(key) {
+                let index = this._hash(key);
+
+                if(!this.dataMap[index]) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            remove(key) {
+                let index = this._hash(key);
+
+                if(!this.dataMap[index]) {
+                    return null;
+                }
+
+                delete this.dataMap[index];
+                return true;
+            }
+
+            lengthy() {
+                return Object.keys(this.dataMap).length;
+            }
+
+            clear() {
+                this.dataMap = [];
+            }
+
+            keys() {
+                let allKeys = [];
+                for (let i = 0; i < this.dataMap.length; i++) {
+                    if (this.dataMap[i]) {
+                        for (let j = 0; j < this.dataMap[i].length; j++) {
+                            allKeys.push(this.dataMap[i][j][0]);
+                        }
+                    }
+                }
+
+                return allKeys;
+            }
+
+            values() {
+                let allValues = [];
+                for (let i = 0; i < this.dataMap.length; i++) {
+                    if (this.dataMap[i]) {
+                        for (let j = 0; j < this.dataMap[i].length; j++) {
+                            allValues.push(this.dataMap[i][j][1]);
+                        }
+                    }
+                }
+
+                return allValues;
+
+            }
+
+            entries() {
+
+                for (let i = 0; i < this.dataMap.length; i++) {
+                    if (this.dataMap[i]) {
+                        for (let j = 0; j < this.dataMap[i].length; j++) {
+                            console.log(`${this.dataMap[i][j][0]}: ${this.dataMap[i][j][1]}`)
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+
+        let myHT = new HashTable();
+
+        myHT.set('Italy', 'Ducati');
+        myHT.set('UK', 'Triumph');
+        myHT.set('Austria', 'KTM');
+        myHT.set('Japa', 'Yamaha');
+        myHT.set('USA', 'Harley Davidson');
+
+        console.log(myHT.get('UK'));
+        console.log(myHT.get('USA'));
+
+        console.log(myHT.keys());
+
+        console.log(myHT.has('UK'));
+        console.log(myHT.has('France'));
+
+        console.log(myHT.lengthy());
+
+        console.log(myHT.values());
+
+        console.log(myHT.entries());
+
+
+    </script>
+
+</body>
+</html>
